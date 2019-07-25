@@ -2,7 +2,6 @@ import * as Express from "express";
 import IRouter from "./IRouter";
 import * as Path from "path";
 import { ILogger } from "@collate/logging";
-import DataMessage from "../messages/DataMessage";
 import IRouteHandler from "./IRouteHandler";
 import { 
     IValidationSchema, 
@@ -13,7 +12,8 @@ import {
     IValidationResult
 } from "@collate/request-validator";
 import StatusCodes from "./StatusCodes";
-import ErrorMessage from "../messages/ErrorMessage";
+import ErrorMessage from "../Messages/ErrorMessage";
+import DataMessage from "../Messages/DataMessage";
 
 const RouteValidator : IValidator = new Validator();
 
@@ -104,13 +104,13 @@ export default abstract class Router implements IRouter {
         return true;
     }
 
-    protected sendError(response: Express.Response, message: any, status: number) : void {
+    protected sendError(response: Express.Response, error: any, status: number) : void {
         response
-            .json(new ErrorMessage(message))
+            .json(new ErrorMessage(error))
             .status(status);
     }
 
-    protected sendData(response: Express.Response, data: object, status: number) : void {
+    protected sendData(response: Express.Response, data: any, status: number) : void {
         response
             .json(new DataMessage(data))
             .status(status);
